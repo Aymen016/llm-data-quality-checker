@@ -157,11 +157,6 @@ with st.sidebar:
 
 uploaded = st.file_uploader("CSV file", type=["csv"])
 
-sample_path = Path(__file__).parent / "data" / "customers.csv"
-use_sample = False
-if uploaded is None and sample_path.exists():
-    use_sample = st.checkbox(f"Use sample data ({sample_path.name})", value=False)
-
 csv_path: str | None = None
 tmp_file = None
 
@@ -170,11 +165,9 @@ if uploaded is not None:
     tmp_file.write(uploaded.getvalue())
     tmp_file.close()
     csv_path = tmp_file.name
-elif use_sample:
-    csv_path = str(sample_path)
 
 if csv_path is None:
-    st.info("Upload a CSV or check the sample-data box to get started.")
+    st.info("Upload a CSV to get started.")
     st.stop()
 
 run = st.button("Run check", type="primary")
