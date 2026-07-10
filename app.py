@@ -157,11 +157,6 @@ with st.sidebar:
 
 uploaded = st.file_uploader("CSV file", type=["csv"])
 
-sample_path = Path(__file__).parent / "data" / "customers.csv"
-use_sample = False
-if uploaded is None and sample_path.exists():
-    use_sample = st.checkbox(f"Use sample data ({sample_path.name})", value=False)
-
 csv_path: str | None = None
 tmp_file = None
 
@@ -170,28 +165,30 @@ if uploaded is not None:
     tmp_file.write(uploaded.getvalue())
     tmp_file.close()
     csv_path = tmp_file.name
-elif use_sample:
-    csv_path = str(sample_path)
 
 if csv_path is None:
-    st.info("Upload a CSV or check the sample-data box to get started.")
+    st.info("Upload a CSV to get started.")
     st.stop()
 
 run = st.button("Run check", type="primary")
 
-if not run:
+if run:
+    try:
+        with st.spinner("Profiling data and running checks..."):
+            st.session_state["result"] = check(csv_path, use_llm=use_llm)
+    except Exception as e:
+        st.error(f"Check failed: {e}")
+        st.stop()
+    finally:
+        if tmp_file is not None:
+            Path(tmp_file.name).unlink(missing_ok=True)
+elif tmp_file is not None:
+    Path(tmp_file.name).unlink(missing_ok=True)
+
+if "result" not in st.session_state:
     st.stop()
 
-try:
-    with st.spinner("Profiling data and running checks..."):
-        result = check(csv_path, use_llm=use_llm)
-except Exception as e:
-    st.error(f"Check failed: {e}")
-    st.stop()
-finally:
-    if tmp_file is not None:
-        Path(tmp_file.name).unlink(missing_ok=True)
-
+result = st.session_state["result"]
 summary = result["summary"]
 total, passed, errors, warnings = (
     summary["total"], summary["passed"], summary["errors"], summary["warnings"]
