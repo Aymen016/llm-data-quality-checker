@@ -1,0 +1,13 @@
+customer_id,email,age,country,signup_date,amount_spent
+1001,alice@example.com,34,US,2023-01-15,240.50
+1002,bob@example.com,29,USA,2023-02-01,120.00
+1003,not-an-email,41,United States,2023-02-10,90.25
+1004,dana@example.com,-5,US,2023-03-05,300.00
+1005,evan@example.com,52,UK,,410.75
+1006,fiona@example.com,999,US,2023-04-12,-50.00
+1007,greg@example.com,38,USA,2023-05-01,175.00
+1008,,45,US,2023-05-20,220.00
+1003,henry@example.com,33,UK,2023-06-01,60.00
+1010,ivy@example.com,27,US,2099-01-01,510.30
+1011,jack@example.com,31,US,2023-07-15,
+1012,kate@example.com,48,Canada,2023-08-02,None
