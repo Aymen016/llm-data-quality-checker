@@ -1,0 +1,23 @@
+[
+  {"id": "customer_id_not_null", "check": "not_null", "column": "customer_id",
+   "severity": "error", "rationale": "Primary key must always be present."},
+  {"id": "customer_id_unique", "check": "unique", "column": "customer_id",
+   "severity": "error", "rationale": "Customer id should uniquely identify a row."},
+  {"id": "email_not_null", "check": "not_null", "column": "email",
+   "severity": "error", "rationale": "Email is required for contact."},
+  {"id": "email_format", "check": "regex", "column": "email",
+   "params": {"pattern": "[^@\\s]+@[^@\\s]+\\.[^@\\s]+"},
+   "severity": "error", "rationale": "Values must look like valid email addresses."},
+  {"id": "age_range", "check": "range", "column": "age",
+   "params": {"min": 0, "max": 120},
+   "severity": "error", "rationale": "Human age should fall in a plausible range."},
+  {"id": "country_allowed", "check": "allowed_values", "column": "country",
+   "params": {"values": ["US", "UK", "Canada"]},
+   "severity": "warn", "rationale": "Country codes should be standardized; USA/United States are US variants."},
+  {"id": "amount_non_negative", "check": "range", "column": "amount_spent",
+   "params": {"min": 0, "max": 1000000},
+   "severity": "error", "rationale": "Spend cannot be negative."},
+  {"id": "min_rows", "check": "row_count_min",
+   "params": {"min": 1},
+   "severity": "error", "rationale": "Dataset must not be empty."}
+]
